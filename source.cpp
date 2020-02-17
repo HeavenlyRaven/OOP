@@ -11,7 +11,24 @@ public:
 	double& re() { return real; }
 	double& im() { return imag; }
 	inline double abs() const;
+	void print() const {
+		std::cout << real << "+i*(" << imag << ")" << std::endl;
+	}
+	~Complex() {
+		std::cout << "Killed: " << real << ", " << imag << std::endl;
+	}
 
+	Complex operator - (const Complex &Y) const {
+		return Complex(this->real - Y.real, this->imag - Y.imag);
+	}
+
+	Complex & operator = (const Complex &X) {
+		if (this != &X) {
+			this->real = X.real;
+			this->imag = X.imag;
+		}
+		return *this;
+	}
 };
 
 std::ostream& operator << (std::ostream& out, const Complex &X) {
@@ -22,16 +39,19 @@ std::ostream& operator << (std::ostream& out, const Complex &X) {
 	return out;
 }
 
-double Complex::abs() const { return sqrt(real*real + imag * imag); }
+Complex operator + (const Complex &X, const Complex &Y) {
+	return Complex(X.re() + Y.re(), X.im() + Y.im());
+}
+
+double Complex::abs() const { 
+	return sqrt(real*real + imag * imag); 
+}
 
 int main() {
 
 	Complex X(2.0, 2.0);
-	const Complex Y(1.0, 5.0);
-	std::cout << X << std::endl;
-	std::cout << Y << std::endl;
-	X.re() = 6.0;
-	std::cout << X << std::endl;
-
+	Complex Y(1.0, 5.0);
+	Complex *p = &X;
+	X = *p;
 	return 0;
 }
